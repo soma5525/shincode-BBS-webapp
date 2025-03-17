@@ -1,11 +1,15 @@
 import { PrismaClient } from "@prisma/client";
 
 declare global {
-  var prisma: PrismaClient | undefined;
+  // グローバル型定義には let を使用 (ESLintはここを検出している可能性あり)
+  // eslint-disable-next-line no-var
+  let prisma: PrismaClient | undefined;
 }
 
-const prisma = global.prisma || new PrismaClient();
-// Use a single prisma instance across hot reloads in development
-if (process.env.NODE_ENV === "development") global.prisma = prisma;
+// ここでシングルトンパターンを使用
+const prismaClient = global.prisma || new PrismaClient();
 
-export default prisma;
+// 開発環境では同じインスタンスを再利用
+if (process.env.NODE_ENV === "development") global.prisma = prismaClient;
+
+export default prismaClient;

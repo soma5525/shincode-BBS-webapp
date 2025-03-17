@@ -9,14 +9,13 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import { BBSData } from "../types/types";
-import { Content } from "next/font/google";
 
 interface BBSDataProps {
   bbsData: BBSData;
 }
 
 const BBSCard = ({ bbsData }: BBSDataProps) => {
-  const { id, title, content, username, createdAt } = bbsData;
+  const { id, title, content, username } = bbsData;
 
   return (
     <div>

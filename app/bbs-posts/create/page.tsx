@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -17,7 +16,6 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
-import { useRouter } from "next/navigation";
 import { postBBS } from "@/app/actions/postBBSAction";
 
 export const formSchema = z.object({
@@ -34,8 +32,6 @@ export const formSchema = z.object({
 });
 
 const CreateBBSPage = () => {
-  const router = useRouter();
-
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
