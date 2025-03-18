@@ -23,7 +23,7 @@ async function getBBSAllData() {
     const text = await response.text();
     try {
       return JSON.parse(text) as BBSData[];
-    } catch (e) {
+    } catch (_e) {
       console.error("Failed to parse JSON:", text);
       return [];
     }

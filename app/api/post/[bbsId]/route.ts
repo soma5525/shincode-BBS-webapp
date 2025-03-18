@@ -1,14 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../lib/prismaClient";
 
-type Props = {
-  params: {
-    bbsId: string;
-  };
-};
-
-export async function GET(request: NextRequest, props: Props) {
-  const bbsId = props.params.bbsId;
+export async function GET(
+  request: NextRequest,
+  context: { params: { bbsId: string } }
+) {
+  const bbsId = context.params.bbsId;
 
   try {
     const bbsDetailData = await prisma.post.findUnique({
@@ -22,7 +19,7 @@ export async function GET(request: NextRequest, props: Props) {
     }
 
     return NextResponse.json(bbsDetailData);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { error: "Failed to fetch post" },
       { status: 500 }
