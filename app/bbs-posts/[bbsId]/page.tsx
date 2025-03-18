@@ -22,7 +22,6 @@ const BBSDetailPage = async ({ params }: { params: { bbsId: number } }) => {
         <h1 className="text-2xl font-bold">{title}</h1>
         <p className="text-gray-700">{username}</p>
       </div>
-
       <div className="mb-8">
         <p className="text-gray-900">{content}</p>
       </div>
