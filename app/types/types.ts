@@ -3,5 +3,5 @@ export interface BBSData {
   username: string;
   title: string;
   content: string;
-  createdAt: string;
+  createdAt: Date;
 }

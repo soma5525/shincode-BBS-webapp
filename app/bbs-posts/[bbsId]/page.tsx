@@ -1,39 +1,68 @@
 import React from "react";
 import { BBSData } from "@/app/types/types";
-import Link from "next/link"; // import Link from "next/link";
+import Link from "next/link";
+import { getPostById } from "@/app/actions/getBBSAction";
+import { Button } from "@/components/ui/button";
+import { deleteBBS } from "@/app/actions/deleteBBSAction";
+import { notFound } from "next/navigation";
 
-async function getDetailBBSData(id: number) {
-  const response = await fetch(`http://localhost:3000/api/post/${id}`, {
-    cache: "no-store",
-  });
-
-  const bbsDetailData: BBSData = await response.json();
-
-  return bbsDetailData;
+interface PageParams {
+  params: Promise<{ bbsId: string }>;
 }
 
-const BBSDetailPage = async ({ params }: { params: { bbsId: number } }) => {
-  const bbsDetailData = await getDetailBBSData(params.bbsId);
-  const { title, content, username } = bbsDetailData;
+const BBSDetailPage = async ({ params }: PageParams) => {
+  try {
+    // paramsからbbsIdを取得
+    const { bbsId } = await params;
 
-  return (
-    <div className="mx-auto max-w-4xl p-4">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold">{title}</h1>
-        <p className="text-gray-700">{username}</p>
-      </div>
-      <div className="mb-8">
-        <p className="text-gray-900">{content}</p>
-      </div>
+    // 投稿データの取得
+    const bbsDetailData = await getPostById(bbsId);
+    if (!bbsDetailData) {
+      notFound();
+    }
 
-      <Link
-        href="/"
-        className="bg-blue-500 text-white font-bold py-2 px-4 rounded-md"
-      >
-        戻る
-      </Link>
-    </div>
-  );
+    // データが存在する場合の表示内容
+    const { title, content, username } = bbsDetailData;
+
+    return (
+      <div className="mx-auto max-w-4xl p-4">
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold">{title}</h1>
+          <p className="text-gray-700">{username}</p>
+        </div>
+        <div className="mb-8">
+          <p className="text-gray-900">{content}</p>
+        </div>
+        <div className="flex justify-between">
+          <Link
+            href="/"
+            className="bg-blue-500 text-white font-bold py-2 px-4 rounded-md"
+          >
+            戻る
+          </Link>
+          <form action={deleteBBS}>
+            <input type="hidden" name="bbsId" value={bbsId} />
+            <Button type="submit" variant="destructive">
+              削除
+            </Button>
+          </form>
+        </div>
+      </div>
+    );
+  } catch (error) {
+    return (
+      <div className="mx-auto max-w-4xl p-4">
+        <h1 className="text-2xl font-bold text-red-500">エラー</h1>
+        <p>投稿の取得に失敗しました。</p>
+        <Link
+          href="/"
+          className="bg-blue-500 text-white font-bold py-2 px-4 rounded-md mt-4 inline-block"
+        >
+          戻る
+        </Link>
+      </div>
+    );
+  }
 };
 
 export default BBSDetailPage;

@@ -1,48 +1,42 @@
 import BBSCardList from "./components/BBSCardList";
 import { BBSData } from "./types/types";
-
-async function getBBSAllData() {
-  try {
-    const response = await fetch("http://localhost:3000/api/post", {
-      cache: "no-store",
-    });
-
-    if (!response.ok) {
-      const errorData = await response
-        .json()
-        .catch(() => ({ error: "Unknown error" }));
-      console.error(
-        "API error:",
-        response.status,
-        response.statusText,
-        errorData
-      );
-      return [];
-    }
-
-    const text = await response.text();
-    try {
-      return JSON.parse(text) as BBSData[];
-    } catch (_e) {
-      console.error("Failed to parse JSON:", text);
-      return [];
-    }
-  } catch (error) {
-    console.error("Network error:", error);
-    return [];
-  }
-}
+import { getAllPost } from "./actions/getBBSAction";
+import Link from "next/link";
 
 export default async function Home() {
   let bbsAllData: BBSData[] = [];
+  let error = false;
+
   try {
-    bbsAllData = await getBBSAllData();
-  } catch (error) {
-    console.error("投稿の取得に失敗しました。", error);
+    bbsAllData = await getAllPost();
+  } catch (e) {
+    console.error("投稿の取得に失敗しました。", e);
+    error = true;
   }
+
   return (
-    <main>
-      <BBSCardList bbsAllData={bbsAllData} />
+    <main className="container mx-auto">
+      <div className="flex justify-between items-center mb-4 px-4 py-2">
+        <h1 className="text-2xl font-bold">掲示板一覧</h1>
+        <Link
+          href="/bbs-posts/create"
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+        >
+          新規投稿
+        </Link>
+      </div>
+
+      {error ? (
+        <div className="p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+          投稿の取得中にエラーが発生しました。後でもう一度お試しください。
+        </div>
+      ) : bbsAllData.length === 0 ? (
+        <div className="p-4 text-center">
+          投稿がありません。最初の投稿を作成しましょう！
+        </div>
+      ) : (
+        <BBSCardList bbsAllData={bbsAllData} />
+      )}
     </main>
   );
 }
