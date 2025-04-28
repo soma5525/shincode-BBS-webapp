@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const formSchema = z.object({
+  bbsId: z.string().optional(),
   username: z
     .string()
     .min(2, { message: "ユーザー名は２文字以上で入力してください。" }),

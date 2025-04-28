@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
-import { BBSData } from "../types/types";
+import { BBSData } from "../app/types/types";
 
 interface BBSDataProps {
   bbsData: BBSData;

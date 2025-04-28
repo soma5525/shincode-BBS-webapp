@@ -1,4 +1,4 @@
-import BBSCardList from "./components/BBSCardList";
+import BBSCardList from "../components/BBSCardList";
 import { BBSData } from "./types/types";
 import { getAllPost } from "./actions/getBBSAction";
 import Link from "next/link";

@@ -26,7 +26,6 @@ export const postBBS = async ({
     console.error("投稿の作成に失敗しました:", error);
     throw new Error("投稿の作成に失敗しました");
   }
-
   // redirectはtry/catchブロックの外で呼び出す
   redirect("/");
 };

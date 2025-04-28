@@ -1,6 +1,6 @@
 import React from "react";
 import BBSCard from "./BBSCard";
-import { BBSData } from "../types/types";
+import { BBSData } from "../app/types/types";
 
 interface BBSAllDataProps {
   bbsAllData: BBSData[];

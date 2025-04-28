@@ -18,19 +18,15 @@ export const getAllPost = async () => {
 export const getPostById = async (bbsId: string) => {
   try {
     const id = parseInt(bbsId);
-
     if (isNaN(id)) {
       throw new Error("無効なID形式です");
     }
-
     const bbsDetailData = await prisma.post.findUnique({
       where: { id },
     });
-
     if (!bbsDetailData) {
       throw new Error("投稿が見つかりませんでした");
     }
-
     return bbsDetailData;
   } catch (error) {
     if (error instanceof Error) {
