@@ -29,6 +29,7 @@ export const putBBS = async ({
       },
     });
     revalidatePath(`/bbs-posts/${postId}`);
+    revalidatePath("/bbs-posts");
   } catch (error) {
     console.error("投稿の編集に失敗しました:", error);
     throw new Error("投稿の編集に失敗しました");
